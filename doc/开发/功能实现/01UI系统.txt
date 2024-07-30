@@ -1,0 +1,40 @@
+⚫●◽★
+——————————————————————
+触发字幕
+⚫编辑器调参
+●P
+Assets/Script/ScriptableObject/Subtitle
+触发条件时间，展示时间
+
+⚫进阶需求
+与上一次间隔X秒后显示
+X次到达显示
+物体触发物体
+——————————————————————
+⚫提示切换UI
+●界面
+【p】Prebs新增HintChangePanel
+勾选资产
+左上角HintKeyboard
+正下方HintText
+●HintChangePanel
+重写父类方法
+●PlayerOnCollisionMethod
+获取奖杯后
+比较当前奖杯数，触发奖杯数
+调用面板，UIManager.Instance.ShowPanel<HintChangePanel>();
+●InputManager\KeyboardFunction.cs
+按Tab关闭
+
+
+
+
+
+——————————————————————
+public void OnTriggerEnter(Collider other)
+
+for (int i = 0; i < StaticData.BallConfigData.BallConfigList.Count; i++)
+{
+    if(StaticData.BallConfigData.BallConfigList)
+    SaveData.CollectedStarList.Count;
+}

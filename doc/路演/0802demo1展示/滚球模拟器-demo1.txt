@@ -1,0 +1,67 @@
+⚫●◽★
+——————————————————————
+
+探索：场景中存在大量的可交互元素与隐藏内容，等待玩家去发现
+
+解谜由多种形式组成，玩家可以通过平台跳跃/触发机关的形式解开谜题，完成关卡
+
+雕像是游戏内的核心收集物，能够通过探索地图或是解开谜题获得
+——————————————————————
+
+1封面
+
+2⚫项目简介
+
+●开篇故事
+【图片】开局漫画
+世界观故事：
+
+●游玩流程
+
+●区域规划
+
+●关卡规划
+
+●美术
+
+●音效
+
+
+⚫项目流程与成果
+
+●策划工作
+
+●美术工作
+
+●程序工作
+
+●总体流程图
+
+●资产文档
+
+●资产文档插入总体流程图
+
+⚫后续计划
+
+●总体流程图
+
+●关卡设计
+
+●试玩活动
+
+⚫试玩环节
+
+⚫附录
+
+滚球策划案	https://docs.qq.com/doc/DVU5qZllQS05jUWpP
+Ball机关布置方法论	https://docs.qq.com/doc/DVVhCRGVzQndPUmlS
+git管理地址	https://code.dobest.com/2024_miniProject
+滚球模拟器美术规范文档1.0	https://w.afbcs.cn/nEYdNB
+音效全表	https://kdocs.cn/l/ctBE9f4sp7Pj
+Ball游戏内文案	https://docs.qq.com/doc/DVXRpY1pwSnBPQ2ZJ
+滚球Unity关卡配置功能使用流程	https://docs.qq.com/doc/DY3JRTmlqTG5CWmph
+项目测试用例	http://case.qa.com/case/all
+Ball字体列表	https://docs.qq.com/doc/DVUVzVUxZbldRRGRG
+关卡idea提供	https://docs.qq.com/doc/DVVRTY0V5bXNGeGpn
+美术资产需求表	https://www.kdocs.cn/l/cdDZ7xExdQkc
+——————————————————————

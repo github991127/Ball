@@ -1,0 +1,15 @@
+⚫●◽★
+——————————————————————
+中文字体
+⚫url
+●两分钟学会为Unity的Textmesh Pro制作中文字体【Unity面向白嫖开发】《零基础入门游戏开发第十二期》
+https://www.bilibili.com/video/BV1z64y1Y7ZH
+
+⚫流程
+●导入字体
+ttf文件【资源圆体】，常用3500字
+windows-TextMeshPro-Font
+生成【ResourceHanRoundedCN-Regular SDF】
+●字体下划线警告
+忽视警告
+https://blog.csdn.net/qq_51026638/article/details/126202279
