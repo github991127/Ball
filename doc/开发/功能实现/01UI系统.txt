@@ -7,34 +7,42 @@ Assets/Script/ScriptableObject/Subtitle
 触发条件时间，展示时间
 
 ⚫进阶需求
+物体损坏后触发
 与上一次间隔X秒后显示
 X次到达显示
 物体触发物体
 ——————————————————————
-⚫提示切换UI
-●界面
+提示切换UI
+⚫P
 【p】Prebs新增HintChangePanel
 勾选资产
 左上角HintKeyboard
 正下方HintText
-●HintChangePanel
-重写父类方法
-●PlayerOnCollisionMethod
-获取奖杯后
-比较当前奖杯数，触发奖杯数
-调用面板，UIManager.Instance.ShowPanel<HintChangePanel>();
-●InputManager\KeyboardFunction.cs
-按Tab关闭
 
-
-
+——————————————————————
+切换UI-2D
+⚫url
+●画布缩放
+https://gitee.com/chutianshu1981/AwesomeUnityTutorial/blob/main/UI%E7%B3%BB%E7%BB%9F/UGUI/UGUI-02-Canvas%E7%94%BB%E5%B8%83%E5%8F%8A%E7%9B%B8%E5%85%B3%E7%BB%84%E4%BB%B6%E8%AE%BE%E7%BD%AE.md#22-%E9%94%81%E5%AE%9A%E9%A1%B9%E7%9B%AE%E7%9A%84%E7%BA%B5%E6%A8%AA%E6%AF%94
+●281-unity UI最佳缩放模式设置【unity2022入门教程】-UI入门系列
+https://www.bilibili.com/video/BV1Fv4y1R79a
+⚫流程
 
 
 ——————————————————————
-public void OnTriggerEnter(Collider other)
+切换UI-3D
+⚫url
+●Unity3D游戏开发UGUI-3D滚动UI场景切换过渡实战教程
+https://www.bilibili.com/video/BV1n44y1Z7mu
+⚫流程
+●布置天空盒
+●canvas下创建轮切图片，按钮
 
-for (int i = 0; i < StaticData.BallConfigData.BallConfigList.Count; i++)
-{
-    if(StaticData.BallConfigData.BallConfigList)
-    SaveData.CollectedStarList.Count;
-}
+
+——————————————————————
+
+
+
+
+
+

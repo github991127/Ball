@@ -1,0 +1,46 @@
+⚫●◽★
+——————————————————————
+摄像机视角
+⚫url
+●Unity中实现摄像机视角控制和位移
+https://www.bilibili.com/video/BV1p24y1s7TT
+●Unity相机管理：Cinemachine Brain属性详解
+https://www.bilibili.com/video/BV1FN4y1G7n1
+
+⚫Unity相机管理
+●CMbrain属性
+Live Camera//目前使用的虚拟相机
+Live Blend//正在切换的虚拟相机
+Show Debug Text//G左上角显示Debug文档
+Show Camera Frustun//显示相机视锥体（可视范围）
+lgnore Time Scale//
+World Up Override//上方：默认世界坐标系y，可设置为gameobject
+如果相机y坐标与上方大于90度，相机会自适应旋转直到二者小于90
+Update Method//虚拟相机的行为同步方式
+Blend Update Method//切换的虚拟相机的行为同步方式
+Default Blend//切换速度方式
+Custom Blends//切换的方式列表
+Event//相机离散/连续切换的触发事件
+●CMvirtual属性
+
+Status: Disabled//相机激活状态
+Game Window Guides//G提示信息
+Save During Play//游戏中的相机修改被保存
+Priority//相机优先级
+Follow//body
+Look At//aim
+Standby Update//非激活状态下body和aim的计算频率
+Common Lens//
+Lens Vertical FOV//角度和远近裁面
+Transitions//切换路径★摄像机更换后不旋转
+
+●切换方式
+在H相机上建立两个I虚拟相机，当关闭激活相机1时，加速切入相机2
+增加CMchangelook虚拟相机，在切换界面中启用并拉进视角
+虚拟相机inherit position设置为true，避免视角旋转
+⚫S
+●PlayerBallController
+//加载虚拟相机组预制体
+private void LoadCamera(Transform ballTransform,PlayerBallController playerBallController)
+//添加转换摄像头事件，等待触发
+private void AddPlayerMethodEvent()
