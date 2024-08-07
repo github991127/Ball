@@ -41,4 +41,16 @@ https://www.bilibili.com/video/BV1n44y1Z7mu
 
 ——————————————————————
 
-
+设置1920*1080，设置锚点为扩展
+        public UIManager()
+        {
+            uiRoot = new GameObject
+            {
+                name = "UIRoot"
+            };
+            uiRoot.AddComponent<Canvas>().renderMode=RenderMode.ScreenSpaceOverlay;
+            var canvasScaler = uiRoot.AddComponent<CanvasScaler>();
+            canvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+            uiRoot.AddComponent<GraphicRaycaster>();
+            _panelDic = new Dictionary<Type, PanelBase>();
+        }
