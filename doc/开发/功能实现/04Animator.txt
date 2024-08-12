@@ -1,0 +1,24 @@
+⚫●◽★
+——————————————————————
+https://www.bilibili.com/video/BV1ks4y1m79c
+https://www.bilibili.com/video/BV1gQ4y1e7SS?p=46
+https://docs.unity.cn/cn/2021.3/Manual/class-AnimationClip.html
+⚫创建Animation
+●
+Window/Animation【c+6】
+●H
+选中物体
+⚫创建Animator
+●P
+Assets/Art/Animator
+右键-create-AnimatorController
+●I
+Animator组件，添加P
+●
+添加Animation动画和触发条件Trigger
+⚫运行动画
+获取物体动画组件，改变其上的触发条件
+private static readonly int Trigger = Animator.StringToHash("Trigger");
+aniObj.GetComponent<Animator>().SetTrigger(Trigger);
+
+浮动
