@@ -1,0 +1,15 @@
+⚫●◽★
+——————————————————————
+⚫创建标签
+●S
+StaticClass/StaticStr.cs
+public static class EnvironmentObjTagStr
+
+⚫创建预制体
+●H
+Save和Load设置为触发
+Load设置子物体为复活点
+
+⚫重生检测
+●S
+BallCC/Player/PlayerOnCollisionMethod.cs

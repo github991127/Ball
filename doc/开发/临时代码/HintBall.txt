@@ -1,0 +1,74 @@
+using System;
+using Script.BallState;
+using Script.Manager;
+using Script.StaticClass;
+using Script.Tools.EditorTools.SubtitleConfig;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+namespace Script.Level.CommonUse
+{
+    public class HitBall : MonoBehaviour
+    {
+        public GameObject NoteObj;
+        private static readonly int Trigger = Animator.StringToHash("Trigger");
+
+        private const float CoolTime = 1;
+
+        // private bool isInCooling;
+        public SubtitleConfig config;
+
+        //碰撞次数
+        private int collisionCount;
+
+        //最大碰撞次数
+        [SerializeField] private int maxCollisionCount;
+
+
+        private void OnCollisionEnter(Collision other)
+        {
+            //击球
+            if (other.transform.CompareTag(StaticStr.EnvironmentObjTagStr.Tag_BALL))
+            {
+                collisionCount++;
+                Debug.Log("碰撞次数：" + collisionCount);
+
+                if (collisionCount >= maxCollisionCount)
+                {
+                    //关闭球体控制
+                    EventManager.Instance.TriggerEvent(ClientEvent.PlayerKeyInput_Effective_Change);
+                    return;
+                }
+                //UI显示碰撞次数
+                // UIManager.Instance.ShowPanel
+            }
+
+            //射门
+            if (other.gameObject.name == "Gate")
+            {
+                // MusicManager.Instance.ChangeAndPlaySound("specialduang",true);
+                UIManager.Instance.ShowPanel<SubtitlePanel>().SubtitleConfig = config;
+                //过关：取消激活物体的父物体
+                other.gameObject.transform.parent.gameObject.SetActive(false);
+                BallRebirth();
+            }
+        }
+
+        private void BallRebirth()
+        {
+            if (SaveManager.Instance.SaveData.BallSavingSceneIndex !=
+                SceneManager.GetActiveScene().buildIndex) return;
+            // ballTransform.position = SaveManager.Instance.SaveData.BallSavingPosition;
+            // ballPhysical.Reset();
+            EventManager.Instance.TriggerEvent(ClientEvent.BallPos_Reset);
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+        }
+
+        private void OnCollisionExit(Collision other)
+        {
+        }
+    }
+}

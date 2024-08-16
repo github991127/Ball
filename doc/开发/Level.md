@@ -49,8 +49,11 @@
 - [不倒翁](#不倒翁)
     - [流程](#流程-13)
     - [Tumbler.cs](#tumblercs)
+- [足球关卡管理✔️Soccer](#足球关卡管理soccer)
+    - [流程](#流程-14)
+    - [SoccerMono.cs](#soccermonocs)
 - [AAA](#aaa)
-    - [BBB](#bbb)
+    - [流程](#流程-15)
     - [CCC.cs](#ccccs)
 - [常用](#常用)
     - [结构](#结构)
@@ -324,21 +327,66 @@ rb.centerOfMass = new Vector3(0, -1, 0);
 ```
 
 ---
+# 足球关卡管理✔️Soccer
+
+## 流程
+        
+        
+
+## SoccerMono.cs
+
+字段和属性
+HitBallAddress: 存储用于加载“击中球”（可能是游戏中的足球）的预制件（Prefab）的地址。
+
+SoccerLevelConfigList: 存储关卡配置信息的列表。
+
+hitBallObj 和 hitBall: 分别用于存储“击中球”的GameObject和组件引用。
+
+worldList: 存储每个关卡GameObject的数组。
+
+soccerSaveData: 存储游戏保存数据的引用。
+
+curLevelIndex: 当前关卡索引。
+
+方法
+Awake(): 这是一个Unity生命周期方法，在GameObject激活时自动调用。它初始化世界列表，从保存数据中获取当前关卡索引，并调用InitLevel()方法来加载关卡和“击中球”。
+
+InitLevel(): 这是一个异步方法，用于加载从当前关卡索引开始的所有关卡以及“击中球”。它使用LoadManager.Instance.LoadAndShowPrefabAsync方法来异步加载预制件，并等待所有关卡加载完成后再加载“击中球”。
+
+OnHitBallCollisionWithBall(): 当“击中球”与游戏中的球发生碰撞时调用的方法。这里只检查了碰撞次数是否达到预设值，但没有实现透明度更改的逻辑。
+
+NextLevel(): 用于加载下一个关卡的方法。它更新保存数据中的关卡索引，隐藏当前关卡，并重置“击中球”的碰撞次数和位置。
+
+ResetBallPos(): 触发一个事件来重置球的位置。具体的重置逻辑可能在其他地方实现。
+
+ResetHitBallPos(): 根据当前关卡中名为“HitBallRespawn”的标记物（可能是Transform或GameObject）来重置“击中球”的位置。
+
+关键点
+单例模式: MonoSingleton<SoccerMono>可能是一个用于确保SoccerMono类在整个游戏中只有一个实例的基类。
+
+异步加载: 使用AsyncOperationHandle和await关键字来实现异步加载关卡，以提高游戏的加载速度和用户体验。
+
+事件和委托: 使用委托来处理加载完成后的回调，以及使用EventManager来触发和监听事件。
+
+资源管理: 通过LoadManager和SaveManager来管理游戏的资源加载和保存，这有助于保持代码的整洁和可维护性。
+
+潜在的问题和改进点
+碰撞透明度更改未实现: OnHitBallCollisionWithBall方法中的透明度更改逻辑未实现。
+
+错误处理: 加载过程中可能会遇到错误，但没有看到任何错误处理逻辑。
+
+性能优化: 加载所有关卡而不是仅当前关卡可能会影响游戏的加载时间。
+
+代码注释: 虽然代码有一定的自解释性，但添加更多的注释可以帮助其他开发者更快地理解代码的目的和逻辑。
 
 
 
-NoteFloat.cs
-SoundWaveMono. csc
-Wave.cs
-EnvironmentRootBase.cs
-LivingRoomEnvironment.cs
+
 
 ---
-
-
 # AAA
 
-## BBB
+## 流程
         1新建类，继承MonoBehaviour
         成员：X
         2事件函数

@@ -168,22 +168,18 @@ private void OnSaveSettingClick()
 ```
 # 字幕
 ## 流程
-        timeIndex延时关闭
-        取消已经安排的事件
-        碰撞和触发调用
-        检测取出并删去字典内容
+        1新建类，继承PanelBase
+        成员：
+        引用字幕文本组件private Transform subtitleText;
+        配置：目标物，文本，时间public SingleSubtitleConfig CurSubtitleConfig;
+        延迟存在时间private int timeIndex;
+        2事件函数
+        面板延迟消失，消失后记录
+        查找文本物体
+        获取文本物体的文本
+        面板已消失，取消已经安排的事件
 ## SubtitlePanel.cs
 
-- 成员
-```csharp
-//引用字幕文本组件,Transform
-private Transform subtitleText;
-//配置：目标物，文本，时间
-public SingleSubtitleConfig CurSubtitleConfig;
-//延迟存在时间
-private int timeIndex;
-```
-- 函数
 ```csharp
 //面板延迟消失，消失后记录
 timeIndex=AddCloseCall();

@@ -4,7 +4,7 @@
 ●手册
 https://docs.unity.cn/cn/2021.3/Manual/UnityManual.html
 ●「实战系统课」：Unity
-https://www.bilibili.com/video/BV1h3411U7db
+https://www.bilibili.com/video/BV1t24y167JY
 ——————————————————————
 ⚫2.2.2 | Unity中的Scene视图
 ●摄像机
