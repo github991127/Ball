@@ -60,6 +60,14 @@ A岛屿位置与大小不统一，调整为统一
 （0,0,110）→（0,0,102）
 （41,0,45）→（32,0,45）
 （0,0,0）→（0,0,0）
+●冷却球门移动
+[Tooltip("碰撞冷却时间")]
+public float CoolTime=1.5f;
+private bool isInCooling;
+
+if(isInCooling)return;
+    isInCooling = true;
+    TimeTool.Instance.Delay(CoolTime, (() => isInCooling = false));
 
 ●守门员
 
@@ -71,16 +79,89 @@ A岛屿位置与大小不统一，调整为统一
 UI
 
 
-[Tooltip("碰撞冷却时间")]
-public float CoolTime=1.5f;
+
+
+
+●HitBall
+//作弊
+    void Update()
+    {
+        if (Input.GetKeyUp(KeyCode.Z))
+        {
+            SoccerMono.Instance.NextLevel();
+        }
+    }
+
+
+●HitBall
+//先判断是否有Door
+    private void FloatDoor()
+    {
+        var doorTimeline = GameObject.Find("DoorTimeline");
+        if (doorTimeline == null) return;
+
+        if (isInCooling) return;
+        isInCooling = true;
+        TimeTool.Instance.Delay(CoolTime, (() => isInCooling = false));
+
+        //循环触发不同trigger
+        switch (doorMoveCount % 4)
+        {
+            case 0:
+                doorTimeline.GetComponent<Animator>().SetTrigger(trigger0);
+                break;
+            case 1:
+                doorTimeline.GetComponent<Animator>().SetTrigger(trigger1);
+                break;
+            case 2:
+                doorTimeline.GetComponent<Animator>().SetTrigger(trigger2);
+                break;
+            case 3:
+                doorTimeline.GetComponent<Animator>().SetTrigger(trigger3);
+                break;
+        }
+
+        doorMoveCount++;
+    }
+
+
+●HitBall
+//足球碰撞场地音效CD
+    private void PlaySound(string physicMaterialName)
+    {
+        if (physicMaterialName == "") return;
+        if (isInCooling) return;
+        isInCooling = true;
+        TimeTool.Instance.Delay(CoolTime, (() => isInCooling = false));
+
+        string[] physicMaterialStringNums = physicMaterialName.Split("_");
+        MusicManager.Instance.ChangeAndPlaySound(physicMaterialStringNums[0], true);
+    }
+
+●BallCollision
+//草地音效冷却时间
 private bool isInCooling;
+[Tooltip("草地音效冷却时间")] private float CoolTime = 0.5f;
 
-if(isInCooling)return;
-    isInCooling = true;
-    TimeTool.Instance.Delay(CoolTime, (() => isInCooling = false));
+public void OnCollisionEnter(Collision other)
+        {
+            if(CollisionEnterMethod==null)return;
+            CollisionEnterMethod(other);
+            
+            if (isInCooling) return;
+            isInCooling = true;
+            TimeTool.Instance.Delay(CoolTime, (() => isInCooling = false));
+            BallOnCollisionSound.PlaySound(other.collider.material.name);
+        }
 
 
 
+- 足球通关后，球门前的奖杯摆放有问题
+去拿奖杯会很容易把球撞进去再次进入足球关，但是没有进入足球关的打算
 
+- 木球多米诺手感问题
+木球召唤出多米诺后，却不能推倒，还需要切换其他球推，下次召唤又要切回来
 
+- 奖杯收集进度
+不知道当前场景中还有多少奖杯，不确定有没有走完设计者的流程
 
