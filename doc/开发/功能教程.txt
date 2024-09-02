@@ -1,0 +1,20 @@
+⚫●◽★
+——————————————————————
+
+●新版Unity打包Webgl端进行屏幕自适应
+https://blog.csdn.net/YTL2859447874/article/details/135159326
+
+
+●如何设置unity运行之后game界面的鼠标隐藏与显示
+https://blog.csdn.net/weixin_41598025/article/details/107252332
+——————————————————————
+●冷却球门移动
+[Tooltip("碰撞冷却时间")]
+public float CoolTime=1.5f;
+private bool isInCooling;
+
+if(isInCooling)return;
+    isInCooling = true;
+    TimeTool.Instance.Delay(CoolTime, (() => isInCooling = false));
+
+
