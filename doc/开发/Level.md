@@ -367,7 +367,7 @@ protected SoccerBaseLevel(SoccerLevelStateManager soccerLevelStateManager)
 //进入下一关逻辑：保存当前关卡索引到SaveManager的SoccerData
 public override void OnEnter()
 
-//退出当前关逻辑：显示目标UI，切换
+//退出当前关逻辑：显示目标UI，切换场景
 public override void OnExit()
 
 //重置关卡数据并加载足球

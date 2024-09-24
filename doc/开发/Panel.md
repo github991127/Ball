@@ -6,207 +6,128 @@
 
 <!-- TOC -->
 
-- [切球](#切球)
-    - [流程](#流程)
-    - [BallChangePanel.cs](#ballchangepanelcs)
-    - [KeyboardFunction.cs](#keyboardfunctioncs)
-    - [InputManager.cs](#inputmanagercs)
-- [开场](#开场)
-    - [流程](#流程-1)
-    - [ComicPanel.cs](#comicpanelcs)
-- [退出](#退出)
-    - [流程](#流程-2)
-    - [ExitPanel.cs](#exitpanelcs)
-    - [KeyboardFunction.cs](#keyboardfunctioncs-1)
-    - [InputManager.cs](#inputmanagercs-1)
-- [提示切换](#提示切换)
-    - [流程](#流程-3)
-    - [HintChangePanel.cs](#hintchangepanelcs)
-- [设置](#设置)
-    - [流程](#流程-4)
-    - [SettingPanel.cs](#settingpanelcs)
-- [字幕](#字幕)
-    - [流程](#流程-5)
-    - [SubtitlePanel.cs](#subtitlepanelcs)
-    - [SubtitleManager.cs](#subtitlemanagercs)
-    - [StaticData.cs](#staticdatacs)
+- [BallChangePanel.cs](#ballchangepanelcs)
+    - [属性](#属性)
+    - [方法](#方法)
+        - [BeforeShow()](#beforeshow)
+        - [AfterHide()](#afterhide)
+        - [Hide()](#hide)
+        - [OnClick()OnPointerEnter()](#onclickonpointerenter)
+        - [AddCloseCall()](#addclosecall)
+    - [功能](#功能)
+- [BallChangePanel.cs](#ballchangepanelcs-1)
+    - [属性](#属性-1)
+    - [方法](#方法-1)
+    - [功能](#功能-1)
+- [AAA.cs](#aaacs)
+    - [属性](#属性-2)
+    - [方法](#方法-2)
+    - [功能](#功能-2)
 
 <!-- /TOC -->
 
 <div STYLE="page-break-after: always;"></div>
 
-# 切球
-## 流程
-        事件绑定单击方法
-        改变相机和操作
-        检测球体解锁
-        切换球体
-## BallChangePanel.cs
+# BallChangePanel.cs
+一个UI面板的基类，用于在游戏或应用程序中提供面板的基本行为和功能。这个类包含了一系列保护字段、虚拟方法以及用于处理UI交互和面板生命周期的辅助方法。下面是对代码中关键部分的详细解释：
+## 属性
+PanelObj：代表面板的GameObject，是UI面板在Unity场景中的实际表示。
+
+CanHideByEsc、IsDisablePlayerMove、IsDisablePlayerCameraActivation、IsHideCurse、IsStopTime：这些布尔字段用于控制面板的行为，如是否可以通过Esc键关闭、是否禁用玩家移动、是否禁用玩家镜头操作、是否隐藏鼠标光标、是否暂停时间等。
+
+## 方法
+### BeforeShow()
 ```csharp
-//设置球类型选择按钮的显示（如果未解锁则变灰）和点击事件
-SetChangeButton();
-//切换相机
-EventManager.Instance.TriggerEvent(ClientEvent.Switch_Camera);
-//更改玩家输入控制的有效性
-EventManager.Instance.TriggerEvent(ClientEvent.Change_Player_KeyInput_Effective);
-//获取星星数量
-SetProgressText();
-//复原Show中的方法：切换相机，更改玩家输入控制的有效性
-public override void BeforeHide()
+//在面板显示之前调用，是否禁用玩家移动、是否禁用玩家镜头操作、是否隐藏鼠标光标、是否暂停时间
+//InputManager单例方法
+if (IsDisablePlayerMove) InputManager.Instance.MoveInputEffective = false;
+if (IsDisablePlayerCameraActivation)
+    EventManager.Instance.TriggerEvent(ClientEvent.PlayerCamera_MoveInputEffective_Change, false);
+//StaticMethod类中包含了经常使用的静态方法
+StaticMethod.LockCursor(IsHideCurse);
+//Time.timeScale设置为趋近于0的无限小，模拟时间暂停的效果，同时又避免了一些可能由完全停止时间（即时间缩放比例为0）引起的问题，比如物理模拟的完全停止。
+if (IsStopTime) StaticMethod.SetTimeScale(0.000001f);
 ```
-## KeyboardFunction.cs
+### AfterHide()
+退出后显示次级UI
+
+### Hide()
+恢复之前可能因面板显示而被禁用的功能（如玩家移动、镜头操作等），并隐藏面板。
+
+### OnClick()OnPointerEnter()
 ```csharp
-//TAB事件
-public void OpenChangeBallPanel()
-//ESC事件
-public void OnEscKeyDown()
-```
-## InputManager.cs
-```csharp
-//事件调用
-private void HandlerEachFrameKeyMethod(bool isOnGround)
-//按下TAB，地面状态
-if (Input.GetKeyDown(KeyCode.Tab) && isOnGround) eachFrameKeyMethod.Add(keyboardFunction.OpenChangeBallPanel);
-//按下ESC
-if (Input.GetKeyDown(KeyCode.Escape)) eachFrameKeyMethod.Add(keyboardFunction.OnEscKeyDown);
-```
-# 开场
-## 流程
-        事件绑定单击方法
-        加载预制体
-        激活分镜画面
-## ComicPanel.cs
-```csharp
-//加载预制体
-LoadManager.Instance.LoadAndShowPrefabAsync(comicGroupName,StaticStr.PrebLoadPath.ComicGroup,PanelObj.transform,(o =>{
-//将某个名为ClickArea的UI元素（可能是按钮或可点击区域）的点击事件绑定到OnComicPanelClick方法上
-OnClick("ClickArea",OnComicPanelClick);
-//单击一次，激活一个分镜画面，全部激活后消失
-private void OnComicPanelClick()
-ComicGroup.GetChild(ComicIndex).gameObject.SetActive(true);
+用于为面板内的按钮添加点击和鼠标移入事件监听器。
+TransformUtil.Find(PanelObj.transform, objName).GetComponent<Button>().onClick.AddListener(callback);
 ```
 
-# 退出
-## 流程
-        事件绑定单击方法
-        改变相机和操作，时间暂停
-        退出游戏
-## ExitPanel.cs
+### AddCloseCall()
 ```csharp
-//更改相机激活状态
-EventManager.Instance.TriggerEvent(ClientEvent.ChangeAllPlayer_CameraActivation);
-//0暂停1开始
-StaticMethod.SetTimeScale(0);
-//退出游戏
-private void OnExitButtonClick()
-{
-#if UNITY_EDITOR
-    EditorApplication.isPlaying = false;
-    return;
-#else
-    Application.Quit();
-#endif
-}
+//添加一个延迟调用，以便在指定的时间后自动关闭面板。通过TimeTool.Instance.Delay方法实现
+timeIndex = TimeTool.Instance.Delay(closeTime, (() => { UIManager.Instance.HidePanel(GetType()); }));
 ```
 
-## KeyboardFunction.cs
-```csharp
-//调用条件
-public void OnEscKeyDown()
-```
+## 功能
 
-## InputManager.cs
-```csharp
-//事件调用
-private void HandlerEachFrameKeyMethod(bool isOnGround)
-//按下ESC
-if (Input.GetKeyDown(KeyCode.Escape)) eachFrameKeyMethod.Add(keyboardFunction.OnEscKeyDown);
-```
 
-# 提示切换
-## 流程
-        改变相机和操作，时间暂停
-        保存设置
-## HintChangePanel.cs
-```csharp
-//更新持久化数据并保存
-SaveManager.Instance.SaveData.isUnLockChangePanel = true;
-SaveManager.Instance.WriteSaveData();
-```
 
-# 设置
-## 流程
-        事件绑定单击方法
-        查询滑块位置，绑定监听
-        改变相机和操作，时间暂停
-        保存音量
-        保存设置
+# BallChangePanel.cs
+用于处理与球类切换相关的UI面板的逻辑。这个面板可能用于游戏中，允许玩家查看可切换的球类信息，并选择切换当前使用的球类。下面是对代码中关键部分的解释：
 
-## SettingPanel.cs
+## 属性
+ballTypeButtonGroup：存储球类按钮组的Transform，这些按钮用于表示不同的球类。
 
-- 成员
-```csharp
-private Slider volumeSettingSlider;
-private Slider soundSettingSlider;
-```
-- 函数
-```csharp
-//为这两个Slider组件的onValueChanged事件添加了监听器
-volumeSettingSlider.onValueChanged.AddListener(SetMusicVolume);
-soundSettingSlider.onValueChanged.AddListener(SetSoundVolume);
+isUnLockBallGroup：一个布尔数组，表示每个球类是否已解锁。
 
-//调整并保存音量
-volumeSettingSlider.value = SaveManager.Instance.SaveData.MusicVolume;
-soundSettingSlider.value = SaveManager.Instance.SaveData.SoundVolume;
+ballConfigList和ballConfigListAble：分别存储所有球类配置和可解锁球类配置的列表。
 
-//其他监听这个事件的部分就可以根据音量值的变化做出相应的处理
-EventManager.Instance.TriggerEvent(ClientEvent.MusicVolume_Setting_Change,volume);
-EventManager.Instance.TriggerEvent(ClientEvent.SoundVolume_Setting_Change,volume);
+## 方法
 
-//保存设置
-private void OnSaveSettingClick()
-```
-# 字幕
-## 流程
-        1新建类，继承PanelBase
-        成员：
-        引用字幕文本组件private Transform subtitleText;
-        配置：目标物，文本，时间public SingleSubtitleConfig CurSubtitleConfig;
-        延迟存在时间private int timeIndex;
-        2事件函数
-        面板延迟消失，消失后记录
-        查找文本物体
-        获取文本物体的文本
-        面板已消失，取消已经安排的事件
-## SubtitlePanel.cs
+## 功能
 
-```csharp
-//面板延迟消失，消失后记录
-timeIndex=AddCloseCall();
-//查找文本物体
-subtitleText=TransformUtil.Find(PanelObj.transform,"SubtitleText");
-//获取文本物体的文本
-subtitleText.GetComponent<TextMeshProUGUI>().text = CurSubtitleConfig.Text;
-//面板已消失，取消已经安排的事件
-TimeTool.Instance.RemoveTimeEvent(timeIndex);
-```
-## SubtitleManager.cs
-```csharp
-//展示面板
-private void ShowSubtitlePanel(SingleSubtitleConfig config)
-        {
-           CheckSubtitlePanelShowing();
-           UIManager.Instance.ShowPanel<SubtitlePanel>().CurSubtitleConfig=config;
-        }
-//已达成触发条件，先删去物体记录，再调用ShowSubtitlePanel
-public void OnCollision(string objName)
-//先检测指定时间后，两物体是否重叠
-public void OnTrigger(Collider other)
-```
 
-## StaticData.cs
-```csharp
-//全字幕字典
-public static Dictionary<string, SingleSubtitleConfig> SubtitleConfigsDic;
-```
+
+方法
+Init：初始化方法，设置IsHideCurse为false，检查所有球类是否可用和是否已解锁，并设置topBallIndex为当前玩家使用的球类的索引。
+
+Bind：绑定UI元素到成员变量，并设置切换球类的按钮点击事件和鼠标移入事件。
+
+Show：显示面板时调用的方法，设置球类纹理位置、中心文本和进度文本，并禁用球类切换功能。
+
+SetBallTexturePos：根据topBallIndex设置球类按钮的纹理和位置，使其围绕中心点分布。
+
+SetCenterText：设置中心文本显示的球类名称和详细信息，根据球类是否已解锁显示不同的文本。
+
+SetChangeButton：为每个球类按钮设置点击事件和鼠标移入事件，如果球类已解锁则添加点击事件，否则将按钮颜色设置为灰色。
+
+CheckAllTypeIsAble和CheckAllTypeIsUnlock：分别检查所有球类是否可用和是否已解锁，并将结果存储在ballConfigListAble和isUnLockBallGroup中。
+
+CheckBallTypeIsUnlock：检查指定索引的球类是否已解锁。
+
+SetProgressText：设置进度文本显示的奖杯数量。
+
+OnTabDown、OnKeyQDown和OnKeyEDown：处理键盘按下事件，用于在球类之间切换。OnTabDown直接切换并隐藏面板，OnKeyQDown和OnKeyEDown分别用于向左和向右切换球类。
+
+BeforeHide：在隐藏面板之前调用，恢复玩家移动输入有效性，切换相机焦点，并启用球类切换功能。
+
+关键点
+事件系统：代码中使用了EventManager.Instance.TriggerEvent来触发事件，这表明游戏使用了一个事件系统来管理不同组件之间的通信。
+
+动画和UI：通过Animator和UI元素（如TextMeshProUGUI和RawImage）来实现动画和界面显示。
+
+状态管理：通过StaticData.Player.BallStateManager.Blackboard.BallConfig等静态变量来管理游戏状态，如当前球类配置。
+
+输入处理：通过重写OnKeyQDown、OnKeyEDown等方法来处理键盘输入，允许玩家通过键盘快捷键来切换球类。
+
+
+
+
+
+
+# AAA.cs
+## 属性
+
+## 方法
+
+## 功能
+
 

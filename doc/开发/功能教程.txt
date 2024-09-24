@@ -17,4 +17,24 @@ if(isInCooling)return;
     isInCooling = true;
     TimeTool.Instance.Delay(CoolTime, (() => isInCooling = false));
 
+●
+
+StaticData.Ball.BallConfigData.BallConfigList.Count
+private bool[] isUnLockBallGroup = new bool[];
+
+
+
+●自动处理
+橡皮擦【E】-右键-魔术橡皮擦-点击空白
+●细节处理
+橡皮擦-右键-普通橡皮擦-点击消除区域
+放大镜【Z】左右拖动
+历史画笔【Y】反向橡皮擦（不能在裁剪后使用）
+●调整像素
+右键-像素大小
+●检查是否遗漏像素点
+选中图层-右键-混合图层-描边-向外描边5像素红色轮廓
+●裁剪导出
+图层-关闭描边
+裁剪【C】
 
