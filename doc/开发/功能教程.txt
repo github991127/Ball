@@ -17,12 +17,8 @@ if(isInCooling)return;
     isInCooling = true;
     TimeTool.Instance.Delay(CoolTime, (() => isInCooling = false));
 
-●
-
-StaticData.Ball.BallConfigData.BallConfigList.Count
-private bool[] isUnLockBallGroup = new bool[];
-
-
+●音效
+MusicManager.Instance.ChangeAndPlaySound("2DJump", true);
 
 ●自动处理
 橡皮擦【E】-右键-魔术橡皮擦-点击空白

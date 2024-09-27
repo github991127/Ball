@@ -75,8 +75,6 @@ Web-2D拉伸✔️
 快速切球UI技能显示错误
 切球web端问题
 
-
-
 0909-0914
 1.问题修复
 ● 修复2D部分动画绑定异常BUG
@@ -88,65 +86,59 @@ Web-2D拉伸✔️
 ● 2D初始6关搭建和优化
 ● 2D新增6关设计和搭建
 
+● 1双球吸引音效;磁力;飞跃;Woosh
+0♥
+● 2棒棒糖机关搬动音效;推动石块
+2♥
+01
+● 3按钮机关按压音效;弹
+1♥
+0
+
+● 4马卡龙移动音效;机械;移动
+2♥
+3410
+● 5吃草莓;奖杯;胜利
+4卧室
+1♥
+230
+● 6坠落复活音效;坠落
+4♥
+123
+● 7大球撞击小球音效;撞击
+2♥
+310
+
+雪人雪地机关枪音效✔️
+集齐钥匙无过关动画✔️
+1-4子物体过关，小球消失✔️
+
+
+    public bool IsFinishAllKeys()
+    {
+        for (int i = 0; i < CollectedKeys.Length; i++)
+        {
+            if (!CollectedKeys[i]) return false;
+        }
+
+        return true;
+    }
 
 
 
-跳跃:大球起跳, 顶起小球
-顶跳:小球即将落在大球上时, 大球二次起跳, 小球将被顶得更高
+private void Awake()
+        {
+            EventManager.Instance.AddEvent(ClientEvent.BedRoomDoor_PlayAni, PlayAni);
+            var saveData = SaveManager.Instance.SaveData;
+            if (!saveData.showedEndingDoorOpen && saveData.IsFinishAllKeys())
+            {
+                TimeTool.Instance.Delay(3f, OpenDoorByKeys);
+                TimeTool.Instance.Delay((float)PlayableDirector.duration + 3f,
+                    (() =>
+                    {
+                        InputManager.Instance.KeyInputEffective = true;
+                        UIManager.Instance.ShowPanel<CommonPanel>();
+                    }));
+            }
+        }
 
-布丁:持续按压时启动, 离开时复原
-棒棒糖:经过时启动, 反向经过时复原
-
-双球在一起时, 共同进退, 处于绑定状态
-双球跳跃后, 可被分离在不同平台, 从而解绑
-
-双球上下对齐, 按shift, 可向上吸引绑定, 二次按shift, 解绑
-双球左右对齐, 按shift, 可左右吸引绑定
-
-推动箱子到合适的位置, 再开启机关
-按ESC键重新开始本关
-
-1-1
-1-2
-1-3
-1-4
-……
-
-大小顶球
-惺惺相惜
-跨越彼岸
-走迷宫
-2
-回程缆车
-太空电梯
-山就在那
-城墙垛
-3
-移动机关
-悬崖勒马
-摆渡众生
-来自深渊
-4
-小心台阶
-后来居上
-封印之窗
-流星雨482
-5
-比个耶
-水陆两栖
-球走龙蛇
-夹缝中生存
-
-
-跳跃平台降低
-拉杆方向利好玩家
-
-
-
-
-1-3V平台，向上拉✔️
-1-4斜平台，向下拉✔️
-2-2右侧封死
-
-
-4-3V平台，向下拉
