@@ -1,0 +1,265 @@
+●BallChangePanel
+
+这段C#代码定义了一个名为BallChangePanel的类，它继承自PanelBase类，用于处理与球类更改相关的UI逻辑。这个类主要用于在游戏界面上显示和切换可解锁的球类，以及显示与这些球类相关的信息（如名称、描述和解锁状态）。以下是对代码主要部分的解释：
+
+成员变量
+ballTypeButtonGroup：一个Transform，表示包含所有球类按钮的UI元素。
+
+nameText和detailText：TextMeshProUGUI类型的变量，用于显示当前选中球类的名称和详细信息。
+
+topBallIndex：表示当前选中的球类在可解锁列表中的索引。
+
+progressText：Transform类型的变量，用于显示与解锁球类相关的进度信息（如已收集的奖杯数量）。
+
+backgroundAnimator：Animator类型的变量，用于控制背景动画。
+
+R和L：Animator的哈希标识符，用于触发向右或向左的动画。
+
+isUnLockBallGroup：布尔数组，表示每个球类是否已解锁。
+
+ballConfigList和ballConfigListAble：List<BallConfig>类型的变量，分别表示所有球类的配置和可解锁球类的配置。
+
+方法
+Init：初始化方法，设置一些基础状态，并检查哪些球类是可解锁的以及它们的解锁状态。
+
+Bind：绑定方法，用于找到UI元素并设置事件监听器。
+
+Show：显示面板时调用的方法，设置球类纹理位置、中心文本和进度文本，并禁用球类切换。
+
+SetBallTexturePos：设置球类按钮的纹理和位置，根据当前选中的球类调整它们的旋转和位置。
+
+SetCenterText：设置中心显示的球类名称和详细信息，根据球类是否已解锁显示不同的信息。
+
+SetChangeButton：为球类按钮设置点击事件和鼠标悬停事件。
+
+CheckAllTypeIsAble和CheckAllTypeIsUnlock：分别检查哪些球类是可解锁的以及它们的解锁状态。
+
+CheckBallTypeIsUnlock：检查指定索引的球类是否已解锁。
+
+SetProgressText：设置进度文本，显示已收集的奖杯数量。
+
+OnTabDown、OnKeyQDown和OnKeyEDown：处理键盘输入，用于切换当前选中的球类。
+
+BeforeHide：在隐藏面板之前调用的方法，恢复输入控制和相机聚焦，并启用球类切换。
+
+关键点
+使用了TextMeshProUGUI来显示文本，这是一个Unity的文本渲染组件，支持丰富的文本格式和性能优化。
+
+通过Animator组件来控制背景动画，实现了在切换球类时的视觉反馈。
+
+使用了事件监听器（如OnClick和OnPointerEnter）来处理用户交互。
+
+通过检查SaveManager.Instance.SaveData.CollectedStarList.Count来确定球类是否已解锁，这是游戏状态管理的一种方式。
+
+通过递归调用OnKeyQDown和OnKeyEDown（虽然在这段代码中递归调用被注释掉了）可以处理连续按键的情况，但为了避免无限循环，通常需要使用某种形式的冷却时间或条件检查。
+
+●PanelBase
+这段C#代码定义了一个名为PanelBase的类，它是Unity项目中用于创建和管理UI面板的基类。这个类提供了一系列的基础功能和虚拟方法，旨在被继承以创建具有特定逻辑的UI面板。下面是对这段代码的详细解释：
+
+成员变量
+PanelObj: 表示面板对应的GameObject。
+
+CanHideByEsc, IsDisablePlayerMove, IsDisablePlayerCameraActivation, IsHideCurse, IsStopTime: 这些布尔值用于控制面板的行为，如是否可以通过Esc键关闭、是否禁用玩家移动、是否禁用玩家相机操作、是否隐藏鼠标光标、是否暂停时间等。
+
+方法
+Init: 虚拟方法，用于初始化面板。子类可以重写此方法以添加初始化逻辑。
+
+Bind: 虚拟方法，用于绑定事件和UI元素。子类可以重写此方法以添加绑定逻辑。
+
+BeforeShow: 在显示面板之前调用的方法，用于执行一些前置操作，如禁用玩家移动、隐藏鼠标光标等。
+
+Show: 虚拟方法，用于显示面板。子类可以重写此方法以添加显示逻辑。
+
+BeforeHide: 虚拟方法，在关闭面板之前调用的方法，用于执行一些清理操作。
+
+AfterHide: 虚拟方法，在关闭面板之后调用的方法，用于执行一些后续操作，如重新显示之前的面板。
+
+Hide: 保护方法，用于关闭面板。它恢复之前BeforeShow中禁用或更改的设置，如启用玩家移动、显示鼠标光标等，并调用UIManager来隐藏面板。
+
+OnClick: 辅助方法，用于为UI元素添加点击事件监听器，并支持颜色变化效果（如果启用）。
+
+OnPointerEnter 和 OnPointerExit: 辅助方法，用于为UI元素添加鼠标移入和移出事件监听器。
+
+AddCloseCall: 辅助方法，用于在指定时间后自动关闭面板。
+
+OnKeyQDown, OnKeyEDown, OnShiftDown, OnTabDown, OnEscDown, OnAnyKeyDown: 这些是键盘事件处理方法，用于处理不同的键盘按键事件。OnEscDown方法特别用于处理Esc键的按下事件，如果CanHideByEsc为true，则调用Hide方法来关闭面板。
+
+关键点
+继承与扩展：PanelBase类提供了UI面板的基础框架，子类可以通过重写虚拟方法来扩展或修改这些行为。
+
+事件监听：使用Unity的EventTrigger和UnityAction来监听和处理UI事件，如点击、鼠标移入和移出等。
+
+状态管理：通过布尔变量来控制面板的状态和行为，如是否禁用玩家操作、是否隐藏鼠标光标等。
+
+时间控制：使用TimeTool.Instance.Delay方法来实现延迟操作，如自动关闭面板。
+
+UI管理：通过UIManager类来管理UI面板的显示和隐藏，这是Unity项目中常见的UI管理方式。
+
+总的来说，PanelBase类为Unity项目中的UI面板提供了一个灵活且可扩展的基础框架，通过继承和重写其方法，可以轻松地创建具有特定功能的UI面板。
+
+
+
+
+●
+//获取足球关数据
+protected SoccerLevelBlackboard Blackboard=>soccerLevelStateManager.Blackboard;
+
+//构造函数赋值StateKey和soccerLevelStateManager
+protected SoccerBaseLevel(SoccerLevelStateManager soccerLevelStateManager)
+
+//进入下一关逻辑：保存当前关卡索引到SaveManager的SoccerData
+public override void OnEnter()
+
+//退出当前关逻辑：显示目标UI，切换场景
+public override void OnExit()
+
+//重置关卡数据并加载足球
+public virtual void OnStart()
+
+//进入下一关逻辑：显示关卡开始的UI，重置球的位置和碰撞计数，并加载关卡内容
+protected virtual void LevelStart()
+```
+⚫●◽★
+——————————————————————
+⚫气球✔️
+⚫打包✔️
+●webgl分辨率
+●鼠标锁定
+⚫切球界面逻辑✔️
+⚫进入存档后的足球关字幕显示问题
+【进入存档第二关】
+1/7世界杯启动-ESC重置-SHIFT加速
+UnityEngine.Debug:Log (object)
+⚫字幕✔️
+解锁后出现换球UI-COMMON
+左下角UI换球图片逻辑
+右下角技能字幕绑定球体
+
+⚫
+esc延迟字幕
+场景融合
+
+topBallIndex =
+            ballConfigListAble.FindIndex((c) => c == StaticData.Player.BallStateManager.Blackboard.BallConfig);
+    }
+
+curTypeButton.GetComponent<RawImage>().texture = ballConfigListAble[i].changePanelConfig.Texture;
+
+0902-0906
+1.解决webgl旋转屏幕受限和鼠标锁定问题
+2.添加足球关字幕自动匹配关卡功能
+3.完善换球UI逻辑功能
+4.调整动画避免提示UI和QE切球冲突
+5.修复切换场景的融合bug
+——————————————————————
+
+⚫切球界面逻辑✔️
+⚫进入存档后的足球关字幕显示问题
+【进入存档第二关】
+1/7世界杯启动-ESC重置-SHIFT加速
+UnityEngine.Debug:Log (object)
+⚫字幕✔️
+解锁后出现换球UI-COMMON
+左下角UI换球图片逻辑
+右下角技能字幕绑定球体
+
+⚫
+esc延迟字幕
+场景融合
+
+⚫
+提示面板覆盖了普通面板，QE不生效
+提示面板球体序号无法对应，超出列表边界，导致切球非法
+
+动画时间长短
+球体材质素材
+
+⚫
+
+
+
+
+⚫功能
+进入2D关卡流程，4关✔️
+2D过关奖杯✔️
+2D关卡教程指引✔️
+开始游戏timeline给视角✔️
+钥匙UI关闭✔️
+2D关卡关闭音效，BGM✔️
+2D悬崖重生点✔️
+2D-BGM✔️
+timeline对准字幕✔️
+
+⚫BUG
+Web-2D拉伸✔️
+第二次进入2D关GG✔️
+快速切球UI技能显示错误
+切球web端问题
+
+0909-0914
+1.问题修复
+● 修复2D部分动画绑定异常BUG
+● 修复Web切球技能显示错误BUG
+2.功能调整
+● 增加2D关卡教程指引，过关奖杯
+● 替换UI平面图片显示，增加钥匙
+3.关卡策划
+● 2D初始6关搭建和优化
+● 2D新增6关设计和搭建
+
+● 1双球吸引音效;磁力;飞跃;Woosh
+0♥
+● 2棒棒糖机关搬动音效;推动石块
+2♥
+01
+● 3按钮机关按压音效;弹
+1♥
+0
+
+● 4马卡龙移动音效;机械;移动
+2♥
+3410
+● 5吃草莓;奖杯;胜利
+4卧室
+1♥
+230
+● 6坠落复活音效;坠落
+4♥
+123
+● 7大球撞击小球音效;撞击
+2♥
+310
+
+雪人雪地机关枪音效✔️
+集齐钥匙无过关动画✔️
+1-4子物体过关，小球消失✔️
+
+
+    public bool IsFinishAllKeys()
+    {
+        for (int i = 0; i < CollectedKeys.Length; i++)
+        {
+            if (!CollectedKeys[i]) return false;
+        }
+
+        return true;
+    }
+
+
+
+private void Awake()
+        {
+            EventManager.Instance.AddEvent(ClientEvent.BedRoomDoor_PlayAni, PlayAni);
+            var saveData = SaveManager.Instance.SaveData;
+            if (!saveData.showedEndingDoorOpen && saveData.IsFinishAllKeys())
+            {
+                TimeTool.Instance.Delay(3f, OpenDoorByKeys);
+                TimeTool.Instance.Delay((float)PlayableDirector.duration + 3f,
+                    (() =>
+                    {
+                        InputManager.Instance.KeyInputEffective = true;
+                        UIManager.Instance.ShowPanel<CommonPanel>();
+                    }));
+            }
+        }
+
